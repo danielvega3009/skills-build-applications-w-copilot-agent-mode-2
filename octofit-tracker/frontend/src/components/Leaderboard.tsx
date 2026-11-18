@@ -16,9 +16,9 @@ export default function Leaderboard() {
   }, []);
   return (
     <CapabilityCard title="Leaderboard" description="Compare team point totals." loading={loading} error={error} empty={leaderboard.length === 0} emptyText="No leaderboard scores">
-      <ol className="list-group list-group-numbered">
+      <ol className="list-group">
         {leaderboard.map((entry) => (
-          <li className="list-group-item" key={entry.teamName}>{entry.teamName}: {entry.totalPoints} points</li>
+          <li className="list-group-item" key={entry.teamName}>Rank {entry.rank}: {entry.teamName} - {entry.totalPoints} points</li>
         ))}
       </ol>
     </CapabilityCard>
