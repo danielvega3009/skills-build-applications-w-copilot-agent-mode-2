@@ -32,7 +32,7 @@ Record your plan here before editing code.
 
 - Presentation tier decision: Keep React routes and loading, empty, success, and error states in focused components under `src/components`, with all URL construction and fetch behavior centralized in `src/api/client.ts`.
 - Logic tier decision: Express routes in `src/routes/api.ts` should stay thin; validate input and implement activity, team, leaderboard, and workout behavior in explicit functions in `src/services/octofitService.ts`.
-- Data tier decision: Use Mongoose schemas in `src/models` for required fields and valid relationships, and keep seed operations in `src/scripts/seed.ts` idempotent and non-destructive.
+- Data tier decision: Use Mongoose schemas in `src/models` for required fields and valid relationships, enforce unique normalized user emails as a stable seed key, and keep seed operations in `src/scripts/seed.ts` idempotent and non-destructive.
 - Activity tracking approach: Validate activity payloads and ObjectIds in the service, verify that the referenced user and team exist, return `400` or `404` for invalid requests, and derive `points` from `minutes`.
 - Team management approach: Require a non-empty name and mascot, default members to an empty array, and validate that every supplied member id is a valid ObjectId.
 - Leaderboard approach: Aggregate activity points by team in the service, sort descending, and assign a 1-based rank to each team in the returned leaderboard.

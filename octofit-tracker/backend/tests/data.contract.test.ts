@@ -5,6 +5,20 @@ import { seed } from '../src/scripts/seed.js';
 import { Activity, Team, User, Workout } from '../src/models/index.js';
 
 describe('OctoFit data contract', () => {
+  it('enforces unique user emails as a stable seed key', async () => {
+    const mongo = await MongoMemoryServer.create();
+    try {
+      await mongoose.connect(mongo.getUri());
+      await User.init();
+      await User.create({ name: 'Mona', email: 'mona@example.com', fitnessGoal: 'endurance' });
+      await expect(User.create({ name: 'Another Mona', email: 'mona@example.com', fitnessGoal: 'strength' }))
+        .rejects.toMatchObject({ code: 11000 });
+    } finally {
+      await mongoose.disconnect();
+      await mongo.stop();
+    }
+  }, 60_000);
+
   it('requires meaningful user identity and goals', async () => {
     const user = new User({});
     const error = user.validateSync();
