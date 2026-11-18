@@ -74,9 +74,10 @@ export async function createTeam(input: unknown) {
 }
 
 export async function getLeaderboard() {
-  const activities = await Activity.find().lean();
-  const teamIds = [...new Set(activities.map((activity) => activity.team.toString()))];
-  const teams = await Team.find({ _id: { $in: teamIds } }).lean();
+  const [activities, teams] = await Promise.all([
+    Activity.find().lean(),
+    Team.find().lean(),
+  ]);
   const totals = new Map<string, number>();
   for (const activity of activities) {
     const teamId = activity.team.toString();
